@@ -1,7 +1,18 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {};
 
 export default function Dashboard({}: Props) {
-  return <div>Dashboard</div>;
+  const router = useRouter();
+
+  return (
+    <div>
+      <b>Dashboard</b>
+      <br />
+      <button onClick={() => router.push("/examples/aboutus")}>ABOUT US</button>
+    </div>
+  );
 }
