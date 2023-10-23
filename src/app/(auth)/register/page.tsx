@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { userSelector } from "@/src/store/slices/userSlice";
 
 interface User {
   username: string;
@@ -41,7 +42,7 @@ export default function Register({}: Props) {
     resolver: yupResolver(formValidateSchema),
   });
 
-  const reducer = useSelector((state: any) => state.userReducer);
+  const reducer = useSelector(userSelector);
 
   const showForm = () => {
     return (

@@ -16,6 +16,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { RootState } from "@/src/store/store";
+import { userSelector } from "@/src/store/slices/userSlice";
 
 interface User {
   username: string;
@@ -32,7 +34,7 @@ export default function Login({}: Props) {
     password: Yup.string().required("Password is required").trim(),
   });
 
-  const reducer = useSelector((state: any) => state.userReducer);
+  const reducer = useSelector(userSelector);
 
   const {
     control,

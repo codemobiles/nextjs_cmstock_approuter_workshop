@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 const userSlice = createSlice({
   name: "user",
@@ -7,3 +8,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+export const userSelector = (state: RootState) => state.userReducer;
