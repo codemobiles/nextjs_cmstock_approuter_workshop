@@ -13,7 +13,7 @@ export default function AuthProvider({
   const path = usePathname();
   if (path == "/") {
     router.push("/stock");
-    return null;
+    return;
   }
 
   return <div>{children}</div>;
