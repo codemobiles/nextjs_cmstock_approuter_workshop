@@ -12,6 +12,8 @@ import {
 import * as Icons from "@mui/icons-material/";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface User {
   username: string;
@@ -22,9 +24,18 @@ type Props = {};
 
 export default function Register({}: Props) {
   const initialValue: User = { username: "admin", password: "" };
+  const formValidateSchema = Yup.object().shape({
+    username: Yup.string().required("Username is required").trim(),
+    password: Yup.string().required("Password is required").trim(),
+  });
 
-  const { control, handleSubmit } = useForm<User>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<User>({
     defaultValues: initialValue,
+    resolver: yupResolver(formValidateSchema),
   });
 
   const showForm = () => {
@@ -41,6 +52,8 @@ export default function Register({}: Props) {
           render={({ field }) => (
             <TextField
               {...field}
+              error={(errors.username?.message ?? "") != ""}
+              helperText={errors.username?.message?.toString()}
               variant="outlined"
               margin="normal"
               fullWidth
@@ -65,6 +78,8 @@ export default function Register({}: Props) {
           render={({ field }) => (
             <TextField
               {...field}
+              error={(errors.password?.message ?? "") != ""}
+              helperText={errors.password?.message?.toString()}
               variant="outlined"
               margin="normal"
               fullWidth
