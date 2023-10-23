@@ -28,7 +28,7 @@ yarn add @mui/material @emotion/react @emotion/styled @emotion/cache @mui/x-data
 yarn add @mui/icons-material
 # all dependencies
 yarn add react-hook-form @hookform/resolvers yup 
-yarn add formik formik-material-ui chart.js react-chartjs-2 @reduxjs/toolkit react-redux next-redux-wrapper axios react-medium-image-zoom react-iframe  dayjs
+yarn add chart.js react-chartjs-2 @reduxjs/toolkit react-redux next-redux-wrapper axios react-medium-image-zoom react-iframe  dayjs
 ## Install react-medium-image-zoom & react-number-format
 yarn add react-medium-image-zoom react-number-format
 ## Install Cookie (use cookies from next/headers instead
