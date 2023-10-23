@@ -11,7 +11,7 @@ export default function AuthProvider({
 }) {
   const router = useRouter();
   const path = usePathname();
-  if (path != "/stock") {
+  if (path == "/") {
     router.push("/stock");
     return null;
   }
