@@ -14,6 +14,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 
 interface User {
   username: string;
@@ -23,6 +24,7 @@ interface User {
 type Props = {};
 
 export default function Register({}: Props) {
+  const router = useRouter();
   const initialValue: User = { username: "admin", password: "" };
   const formValidateSchema = Yup.object().shape({
     username: Yup.string().required("Username is required").trim(),
@@ -109,7 +111,9 @@ export default function Register({}: Props) {
 
         <Button
           className="mt-4"
-          onClick={() => {}}
+          onClick={() => {
+            router.push("/login");
+          }}
           type="button"
           fullWidth
           variant="outlined"
@@ -130,6 +134,18 @@ export default function Register({}: Props) {
           {showForm()}
         </CardContent>
       </Card>
+      <style jsx global>
+        {`
+          body {
+            min-height: 100vh;
+            position: relative;
+            margin: 0;
+            background-size: cover;
+            background-image: url("/static/img/bg4.jpg");
+            text-align: center;
+          }
+        `}
+      </style>
     </Box>
   );
 }
