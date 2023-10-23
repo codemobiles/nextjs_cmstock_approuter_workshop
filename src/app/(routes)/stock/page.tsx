@@ -9,11 +9,16 @@ export default function Stock({}: Props) {
     <Box sx={{ mt: 1 }}>
       Stock
       <Image
-        src="/static/img/next_login.jpg"
+        src="https://codemobiles.com/biz/images/codemobiles_logo.svg?ref=10"
         width={180}
         height={35}
         alt="logo"
-        style={{ objectFit: "contain" }}
+      />
+      <Image
+        src="https://pospos.co/assets/images/ic_logo_pospos.svg"
+        width={180}
+        height={35}
+        alt="logo"
       />
     </Box>
   );

@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    dangerouslyAllowSVG: true,
+    domains: ["codemobiles.com", "pospos.co"],
+    minimumCacheTTL: 0,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
