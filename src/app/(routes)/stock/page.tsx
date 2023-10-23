@@ -88,10 +88,7 @@ export default function Stock() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Header />
-      <Sidebar />
       <Main open={open}>
-        <DrawerHeader />
         <Typography variant="body1">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
