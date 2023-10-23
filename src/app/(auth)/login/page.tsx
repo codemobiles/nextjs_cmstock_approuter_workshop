@@ -16,8 +16,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { RootState } from "@/src/store/store";
-import { userSelector } from "@/src/store/slices/userSlice";
+import { RootState, useAppDispatch } from "@/src/store/store";
+import { add, userSelector } from "@/src/store/slices/userSlice";
 
 interface User {
   username: string;
@@ -35,6 +35,7 @@ export default function Login({}: Props) {
   });
 
   const reducer = useSelector(userSelector);
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -117,6 +118,7 @@ export default function Login({}: Props) {
         <Button
           className="mt-4"
           onClick={() => {
+            dispatch(add());
             router.push("/register");
           }}
           type="button"
