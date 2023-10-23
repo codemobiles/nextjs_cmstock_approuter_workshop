@@ -11,11 +11,21 @@ type Props = { children: React.ReactNode };
 export default function DefaultLayout({
   children, // will be a page or nested layout
 }: Props) {
+  const [open, setOpen] = React.useState(true);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   return (
     <section>
       <Box sx={{ display: "flex" }}>
-        <Header />
-        <Sidebar />
+        <Header open={open} handleDrawerOpen={handleDrawerOpen} />
+        <Sidebar open={open} handleDrawerClose={handleDrawerClose} />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
