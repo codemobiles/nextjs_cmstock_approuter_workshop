@@ -11,10 +11,10 @@ export default function AuthProvider({
 }) {
   const router = useRouter();
   const path = usePathname();
-  if (path == "/") {
-    router.push("/stock");
-    return;
-  }
+  // if (path == "/") {
+  //   router.push("/stock");
+  //   return;
+  // }
 
   return <div>{children}</div>;
 }
