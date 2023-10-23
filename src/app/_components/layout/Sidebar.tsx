@@ -1,92 +1,156 @@
 "use client";
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Drawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import React from "react";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+
+import DrawerHeader from "./DrawerHeader";
+import theme from "../ThemeRegistry/theme";
+import { Stack } from "@mui/material";
+import { blue } from "@mui/material/colors";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Layers,
+  BarChart,
+  Person,
+  Mail,
+  Inbox,
+  ChevronLeft,
+  ChevronRight,
+} from "@mui/icons-material";
 
 const drawerWidth = 240;
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+const routesList = [
+  { pathname: "/stock", text: "Stock", icon: <Layers /> },
+  { pathname: "/report", text: "Report", icon: <BarChart /> },
+  { pathname: "/aboutus", text: "About us", icon: <Person /> },
+];
+const CustomLink = styled(
+  Link,
+  {}
+)(() => ({
+  textDecoration: "none",
+  color: "black",
 }));
 
 type Props = {
+  handleDrawerClose: any;
   open: boolean;
-  handleDrawerClose: () => void;
 };
 
-export default function Sidebar({ open, handleDrawerClose }: Props) {
-  const theme = useTheme();
-
+const Sidebar = ({ handleDrawerClose, open }: Props) => {
+  const pathname = usePathname();
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-        },
-      }}
-      variant="persistent"
-      anchor="left"
-      open={open}
-    >
+    <Drawer variant="permanent" open={open}>
       <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "ltr" ? (
-            <ChevronLeftIcon />
-          ) : (
-            <ChevronRightIcon />
-          )}
-        </IconButton>
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ backgroundColor: blue }}
+        >
+          <Image
+            src="/static/img/cm_logo.png"
+            width={180}
+            height={35}
+            alt="logo"
+            style={{ objectFit: "contain" }}
+          />
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? <ChevronLeft /> : <ChevronRight />}
+          </IconButton>
+        </Stack>
       </DrawerHeader>
       <Divider />
+
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {routesList.map((route) => {
+          return (
+            <CustomLink href={route.pathname} passHref key={route.text}>
+              <ListItem
+                className={pathname === route.pathname ? "Mui-selected" : ""}
+              >
+                <ListItemIcon>{route.icon}</ListItemIcon>
+                <ListItemText primary={route.text} />
+              </ListItem>
+            </CustomLink>
+          );
+        })}
       </List>
       <Divider />
       <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                {index % 2 === 0 ? <Inbox /> : <Mail />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Drawer>
   );
-}
+};
+
+export default Sidebar;
