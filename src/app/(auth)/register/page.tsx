@@ -12,14 +12,28 @@ import {
 import * as Icons from "@mui/icons-material/";
 import React from "react";
 
+interface User {
+  username: string;
+  password: string;
+}
+
 type Props = {};
 
 export default function Register({}: Props) {
+  const [user, setUser] = React.useState<User>({ username: "", password: "" });
+
   const showForm = () => {
     return (
-      <form>
+      <form
+        onSubmit={() => {
+          alert(JSON.stringify(user));
+        }}
+      >
         {/* Username */}
         <TextField
+          onChange={(e) =>
+            setUser({ username: e.target.value, password: user.password })
+          }
           variant="outlined"
           margin="normal"
           fullWidth
@@ -37,6 +51,9 @@ export default function Register({}: Props) {
 
         {/* Password */}
         <TextField
+          onChange={(e) =>
+            setUser({ username: user.username, password: e.target.value })
+          }
           variant="outlined"
           margin="normal"
           fullWidth
@@ -61,7 +78,7 @@ export default function Register({}: Props) {
         >
           Create
         </Button>
-        
+
         <Button
           className="mt-4"
           onClick={() => {}}
