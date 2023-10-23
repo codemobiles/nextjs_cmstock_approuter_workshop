@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import * as Icons from "@mui/icons-material/";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface User {
   username: string;
@@ -20,53 +21,65 @@ interface User {
 type Props = {};
 
 export default function Register({}: Props) {
-  const [user, setUser] = React.useState<User>({ username: "", password: "" });
+  const initialValue: User = { username: "admin", password: "" };
+
+  const { control, handleSubmit } = useForm<User>({
+    defaultValues: initialValue,
+  });
 
   const showForm = () => {
     return (
       <form
-        onSubmit={() => {
-          alert(JSON.stringify(user));
-        }}
+        onSubmit={handleSubmit((value: User) => {
+          alert(JSON.stringify(value));
+        })}
       >
         {/* Username */}
-        <TextField
-          onChange={(e) =>
-            setUser({ username: e.target.value, password: user.password })
-          }
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Icons.Email />
-              </InputAdornment>
-            ),
-          }}
-          label="Username"
-          autoComplete="email"
-          autoFocus
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icons.Email />
+                  </InputAdornment>
+                ),
+              }}
+              label="Username"
+              autoComplete="email"
+              autoFocus
+            />
+          )}
         />
 
         {/* Password */}
-        <TextField
-          onChange={(e) =>
-            setUser({ username: user.username, password: e.target.value })
-          }
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Icons.Password />
-              </InputAdornment>
-            ),
-          }}
-          label="Password"
-          autoComplete="password"
-          autoFocus
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icons.Password />
+                  </InputAdornment>
+                ),
+              }}
+              label="Password"
+              autoComplete="password"
+              autoFocus
+            />
+          )}
         />
 
         <Button
