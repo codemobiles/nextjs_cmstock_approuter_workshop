@@ -90,6 +90,7 @@ export default function Register({}: Props) {
               helperText={errors.password?.message?.toString()}
               variant="outlined"
               margin="normal"
+              type="password"
               fullWidth
               InputProps={{
                 startAdornment: (
@@ -111,6 +112,7 @@ export default function Register({}: Props) {
           fullWidth
           variant="contained"
           color="primary"
+          disabled={reducer.status == "fetching"}
         >
           Create
         </Button>
