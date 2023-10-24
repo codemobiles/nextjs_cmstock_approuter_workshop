@@ -2,6 +2,25 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import * as serverService from "@/src/services/serverService";
 
+interface UserState {
+  username: string;
+  accessToken: string;
+  error?: string;
+  status: "fetching" | "success" | "failed" | "init";
+  isAuthenticated: boolean;
+  isAuthenticating: boolean;
+  count: 0;
+}
+
+const initialState: UserState = {
+  accessToken: "",
+  username: "",
+  status: "init",
+  isAuthenticated: false,
+  isAuthenticating: true,
+  count: 0,
+};
+
 interface SignAction {
   username: string;
   password: string;
@@ -16,7 +35,7 @@ export const signUp = createAsyncThunk(
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { count: 10 },
+  initialState,
   reducers: {
     add: (state) => {
       state.count++;
