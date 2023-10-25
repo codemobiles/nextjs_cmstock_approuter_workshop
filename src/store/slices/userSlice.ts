@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import * as serverService from "@/src/services/serverService";
 import httpClient from "@/src/utils/httpClient";
 import { AxiosRequestConfig } from "axios";
+import build from "next/dist/build";
 
 interface UserState {
   username: string;
@@ -64,6 +65,20 @@ export const signOut = createAsyncThunk("user/signout", async () => {
   await serverService.signOut();
 });
 
+export const getSession = createAsyncThunk("user/fetchSession", async () => {
+  const response = await serverService.getSession();
+  // set access token
+  if (response) {
+    httpClient.interceptors.request.use((config?: AxiosRequestConfig | any) => {
+      if (config && config.headers && response.user) {
+        config.headers["Authorization"] = `Bearer ${response.user?.token}`;
+      }
+      return config;
+    });
+  }
+  return response;
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -109,10 +124,21 @@ const userSlice = createSlice({
       state.isAuthenticating = false;
     });
 
+    // Logout
     builder.addCase(signOut.fulfilled, (state) => {
       state.accessToken = "";
       state.isAuthenticated = false;
       state.isAuthenticating = false;
+    });
+
+    // Get Session
+    builder.addCase(getSession.fulfilled, (state, action) => {
+      state.isAuthenticating = false;
+      if (action.payload && action.payload.user && action.payload.user.token) {
+        state.accessToken = action.payload.user.token;
+        // state.user = action.payload.user;
+        state.isAuthenticated = true;
+      }
     });
   },
 });
