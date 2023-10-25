@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
-    domains: ["codemobiles.com", "pospos.co"],
+    domains: ["codemobiles.com", "pospos.co", "localhost"],
     minimumCacheTTL: 0,
   },
 };
