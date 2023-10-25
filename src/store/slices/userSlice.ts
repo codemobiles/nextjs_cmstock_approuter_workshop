@@ -55,6 +55,8 @@ export const signIn = createAsyncThunk(
 
       return config;
     });
+
+    
     return response;
   }
 );
@@ -85,15 +87,23 @@ const userSlice = createSlice({
     // Login
     builder.addCase(signIn.pending, (state) => {
       state.status = "fetching";
+      state.isAuthenticating = true;
     });
 
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.count++;
       state.status = "success";
+      state.accessToken = action.payload.token;
+      state.isAuthenticated = true;
+      state.isAuthenticating = false;
+      state.username = action.payload.username;
     });
 
     builder.addCase(signIn.rejected, (state) => {
       state.status = "failed";
+      state.accessToken = "";
+      state.isAuthenticated = false;
+      state.isAuthenticating = false;
     });
   },
 });

@@ -53,9 +53,7 @@ export default function Login({}: Props) {
         onSubmit={handleSubmit(async (value: User) => {
           const result = await dispatch(signIn(value));
           if (signIn.fulfilled.match(result)) {
-            alert("Login successfully");
-          } else if (signIn.rejected.match(result)) {
-            // alert("Logini failed");
+            router.push("/stock");
           }
         })}
       >

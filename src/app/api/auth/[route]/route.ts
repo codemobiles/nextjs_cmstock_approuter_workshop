@@ -53,6 +53,7 @@ async function signin(body: {
       sameSite: "strict",
       path: "/",
     });
+
     return NextResponse.json(response.data);
   } catch (error: any) {
     return NextResponse.json({ result: "nok" });
