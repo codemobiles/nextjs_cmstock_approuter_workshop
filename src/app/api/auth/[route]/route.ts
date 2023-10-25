@@ -21,6 +21,11 @@ export async function GET(
 ): Promise<any> {
   const route = context.params.route;
 
+  if (route === "signout") {
+    return signout(request);
+  } else if (route === "session") {
+    // return getSession(request);
+  }
   return NextResponse.json({ route });
 }
 
@@ -38,6 +43,12 @@ export async function POST(
   if (route === "signin") {
     return signin(body);
   }
+}
+
+function signout(request: NextRequest) {
+  const cookieStore = cookies();
+  cookieStore.delete(ACCESS_TOKEN_KEY);
+  return NextResponse.json({ result: "ok" });
 }
 
 async function signin(body: {

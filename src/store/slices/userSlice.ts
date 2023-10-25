@@ -56,10 +56,13 @@ export const signIn = createAsyncThunk(
       return config;
     });
 
-    
     return response;
   }
 );
+
+export const signOut = createAsyncThunk("user/signout", async () => {
+  await serverService.signOut();
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -101,6 +104,12 @@ const userSlice = createSlice({
 
     builder.addCase(signIn.rejected, (state) => {
       state.status = "failed";
+      state.accessToken = "";
+      state.isAuthenticated = false;
+      state.isAuthenticating = false;
+    });
+
+    builder.addCase(signOut.fulfilled, (state) => {
       state.accessToken = "";
       state.isAuthenticated = false;
       state.isAuthenticating = false;
