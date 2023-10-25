@@ -10,7 +10,6 @@ import httpClient from "@/src/utils/httpClient";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-// GET
 export async function GET(
   request: NextRequest,
   context: {
@@ -23,24 +22,3 @@ export async function GET(
 
   return NextResponse.json({ route });
 }
-
-// POST
-export async function POST(
-  request: NextRequest,
-  context: {
-    params: {
-      route: string;
-    };
-  }
-): Promise<any> {
-  const route = context.params.route;
-  const body = await request.json();
-  if (route === "signin") {
-    return NextResponse.json({ echo: body });
-  }
-}
-
-
-// export async function PUT(request: Request) {}
-// export async function DELETE(request: Request) {}
-// export async function PATCH(request: Request) {}

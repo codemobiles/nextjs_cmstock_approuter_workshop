@@ -19,3 +19,14 @@ Content-Type: application/json
 ### profile
 GET http://localhost:8085/api/v2/authen/profile HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibGV2ZWwiOiJub3JtYWwiLCJpYXQiOjE2OTMxNTQ5MjZ9.hWfidD_q-lZX4gK8W8uxJXAWkcZigMVQNlTN4UPyWac
+
+
+
+### Test Next API using AppRouter
+POST http://localhost:3000/api/auth/signin HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "adminadmin2",
+    "password" : "12345"
+}
