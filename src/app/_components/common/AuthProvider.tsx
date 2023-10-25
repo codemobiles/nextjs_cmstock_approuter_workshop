@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import { store } from "@/src/store/store";
 import { useSelector } from "react-redux";
 import { getSession, userSelector } from "@/src/store/slices/userSlice";
+import { Box } from "@mui/material";
+import Loading from "./Loading";
 
 type Props = {};
 
@@ -22,22 +24,21 @@ export default function AuthProvider({
 
   // is fetching session (eg. show spinner)
   if (userReducer.isAuthenticating) {
-    return null;
+    return <Loading />;
   }
   // If user is not logged in, return login component
   if (path !== "/login" && path !== "/register") {
     if (!userReducer.isAuthenticated) {
       router.push(`/login`);
-      return null;
+      return <Loading />;
     } else if (path == "/") {
       router.push(`/stock`); // default page after login when call root path
-      return null;
+      return <Loading />;
     }
   } else {
     if (userReducer.isAuthenticated) {
       router.push(`/stock`); // default page after login
-
-      return null;
+      return <Loading />;
     }
   }
 
