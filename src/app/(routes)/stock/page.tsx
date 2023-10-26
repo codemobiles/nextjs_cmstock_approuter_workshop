@@ -15,6 +15,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Typography } from "@mui/material";
 import { NumericFormat } from "react-number-format";
+import dayjs from "dayjs";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -58,6 +59,16 @@ const columns: GridColDef[] = [
     ),
   },
   { field: "stock", headerName: "Stock", width: 130 },
+  {
+    field: "createdAt",
+    headerName: "Timestamp",
+    width: 230,
+    renderCell: ({ value }) => (
+      <Typography variant="body1">
+        {dayjs(value).format("DD/MM/YYYY HH:mm")}
+      </Typography>
+    ),
+  },
 ];
 
 export default function Stock() {
