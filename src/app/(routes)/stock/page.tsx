@@ -4,6 +4,8 @@ import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
+  GridToolbarContainer,
+  GridToolbarFilterButton,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -13,9 +15,11 @@ import Image from "next/image";
 import { productImageURL } from "@/src/utils/commonUtil";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { Typography } from "@mui/material";
+import { Fab, IconButton, Link, Stack, Typography } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import dayjs from "dayjs";
+import { Add, Delete, Edit } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -69,6 +73,32 @@ const columns: GridColDef[] = [
       </Typography>
     ),
   },
+  {
+    headerName: "ACTION",
+    field: ".",
+    width: 120,
+    renderCell: ({ row }: GridRenderCellParams<any>) => (
+      <Stack direction="row">
+        <IconButton
+          aria-label="edit"
+          size="large"
+          onClick={() => router.push(`/stock/edit?id=${row.id}`)}
+        >
+          <Edit fontSize="inherit" />
+        </IconButton>
+        <IconButton
+          aria-label="delete"
+          size="large"
+          onClick={() => {
+            // setSelectedProduct(row);
+            // setOpenDialog(true);
+          }}
+        >
+          <Delete fontSize="inherit" />
+        </IconButton>
+      </Stack>
+    ),
+  },
 ];
 
 export default function Stock() {
@@ -78,6 +108,29 @@ export default function Stock() {
   React.useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
+  const CustomToolbar: React.FunctionComponent<{
+    setFilterButtonEl: React.Dispatch<
+      React.SetStateAction<HTMLButtonElement | null>
+    >;
+  }> = ({ setFilterButtonEl }) => (
+    <GridToolbarContainer>
+      <GridToolbarFilterButton ref={setFilterButtonEl} />
+      <Link href="/stock/add">
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+          }}
+        >
+          <Add />
+        </Fab>
+      </Link>
+    </GridToolbarContainer>
+  );
 
   return (
     <div style={{ height: 400, width: "100%" }}>
@@ -90,6 +143,9 @@ export default function Stock() {
           },
         }}
         pageSizeOptions={[5, 10]}
+        slots={{
+          toolbar: CustomToolbar,
+        }}
       />
     </div>
   );
