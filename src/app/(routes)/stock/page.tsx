@@ -20,9 +20,11 @@ import { NumericFormat } from "react-number-format";
 import dayjs from "dayjs";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { userSelector } from "@/src/store/slices/userSlice";
 
 export default function Stock() {
   const productReducer = useSelector(productSelector);
+  const userReducer = useSelector(userSelector);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -107,8 +109,10 @@ export default function Stock() {
   ];
 
   React.useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    if (!userReducer.isAuthenticating) {
+      dispatch(getProducts());
+    }
+  }, [dispatch, userReducer.isAuthenticating]);
 
   const CustomToolbar: React.FunctionComponent<{
     setFilterButtonEl: React.Dispatch<
