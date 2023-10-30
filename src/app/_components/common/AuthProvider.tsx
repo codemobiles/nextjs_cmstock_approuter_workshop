@@ -18,29 +18,5 @@ export default function AuthProvider({
     store.dispatch(getSession());
   }, []);
 
-  const path = usePathname();
-  const router = useRouter();
-  const userReducer = useSelector(userSelector);
-
-  // is fetching session (eg. show spinner)
-  if (userReducer.isAuthenticating) {
-    return <Loading />;
-  }
-  // If user is not logged in, return login component
-  if (path !== "/login" && path !== "/register") {
-    if (!userReducer.isAuthenticated) {
-      router.push(`/login`);
-      return <Loading />;
-    } else if (path == "/") {
-      router.push(`/stock`); // default page after login when call root path
-      return <Loading />;
-    }
-  } else {
-    if (userReducer.isAuthenticated) {
-      router.push(`/stock`); // default page after login
-      return <Loading />;
-    }
-  }
-
   return <div>{children}</div>;
 }
