@@ -19,6 +19,38 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+export const addProduct = createAsyncThunk(
+  "product/addProduct",
+  async (values: ProductData) => {
+    let data = new FormData();
+    data.append("name", values.name);
+    data.append("price", String(values.price));
+    data.append("stock", String(values.stock));
+    if (values.file) {
+      data.append("image", values.file);
+    }
+    const response = await serverService.addProduct(data);
+    return response;
+  }
+);
+
+export const editProduct = createAsyncThunk(
+  "product/addProduct",
+  async (values: ProductData) => {
+    let data = new FormData();
+    data.append("id", String(values.id));
+    data.append("name", values.name);
+    data.append("price", String(values.price));
+    data.append("stock", String(values.stock));
+
+    if (values.file) {
+      data.append("image", values.file);
+    }
+    const response = serverService.editProduct(data);
+    return response;
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
