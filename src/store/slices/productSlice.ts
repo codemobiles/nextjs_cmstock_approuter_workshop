@@ -1,7 +1,7 @@
 import { ProductData } from "@/src/models/product.model";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as serverService from "@/src/services/serverService";
-import { RootState } from "../store";
+import { RootState, store, useAppDispatch } from "../store";
 
 interface ProductState {
   products: ProductData[];
@@ -31,6 +31,14 @@ export const addProduct = createAsyncThunk(
     }
     const response = await serverService.addProduct(data);
     return response;
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "product/delete",
+  async (id: string) => {
+    await serverService.deleteProduct(id);
+    store.dispatch(getProducts());
   }
 );
 

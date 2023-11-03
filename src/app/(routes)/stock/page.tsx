@@ -9,7 +9,11 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
-import { getProducts, productSelector } from "@/src/store/slices/productSlice";
+import {
+  deleteProduct,
+  getProducts,
+  productSelector,
+} from "@/src/store/slices/productSlice";
 import { useAppDispatch } from "@/src/store/store";
 import Image from "next/image";
 import { productImageURL } from "@/src/utils/commonUtil";
@@ -44,13 +48,18 @@ import {
 import { useRouter } from "next/navigation";
 import { userSelector } from "@/src/store/slices/userSlice";
 import StockCard from "../../_components/common/StockCard";
+import { ProductData } from "@/src/models/product.model";
+import { useState } from "react";
 
 export default function Stock() {
   const productReducer = useSelector(productSelector);
   const userReducer = useSelector(userSelector);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(
+    null
+  );
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -121,9 +130,8 @@ export default function Stock() {
             aria-label="delete"
             size="large"
             onClick={() => {
-              // setSelectedProduct(row);
-              // setOpenDialog(true);
-              setOpen(true);
+              setSelectedProduct(row);
+              setOpenDialog(true);
             }}
           >
             <Delete fontSize="inherit" />
@@ -162,31 +170,47 @@ export default function Stock() {
     </GridToolbarContainer>
   );
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleDeleteConfirm = () => {
+    if (selectedProduct) {
+      dispatch(deleteProduct(String(selectedProduct.id)));
+      setOpenDialog(false);
+    }
   };
 
-  const showDemoDialog = () => {
+  const showDialog = () => {
+    if (selectedProduct === null) {
+      return;
+    }
+
     return (
       <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+        <DialogTitle id="alert-dialog-slide-title">
+          <Image
+            width={100}
+            height={100}
+            alt="product image"
+            src={productImageURL(selectedProduct.image)}
+            style={{ width: 100, borderRadius: "5%", objectFit: "cover" }}
+          />
+          <br />
+          Confirm to delete the product? : {selectedProduct.name}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+          <DialogContentText id="alert-dialog-slide-description">
+            You cannot restore deleted product.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
+          <Button onClick={() => setOpenDialog(false)} color="info">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -252,7 +276,7 @@ export default function Stock() {
         }}
       />
 
-      {showDemoDialog()}
+      {showDialog()}
     </Box>
   );
 }
