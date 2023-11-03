@@ -17,6 +17,12 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import {
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Fab,
   Grid,
   IconButton,
@@ -44,6 +50,7 @@ export default function Stock() {
   const userReducer = useSelector(userSelector);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -116,6 +123,7 @@ export default function Stock() {
             onClick={() => {
               // setSelectedProduct(row);
               // setOpenDialog(true);
+              setOpen(true);
             }}
           >
             <Delete fontSize="inherit" />
@@ -153,6 +161,37 @@ export default function Stock() {
       </Link>
     </GridToolbarContainer>
   );
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const showDemoDialog = () => {
+    return (
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending
+            anonymous location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   return (
     <Box style={{ height: 400, width: "100%" }}>
@@ -212,6 +251,8 @@ export default function Stock() {
           toolbar: CustomToolbar,
         }}
       />
+
+      {showDemoDialog()}
     </Box>
   );
 }
