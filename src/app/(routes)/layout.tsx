@@ -6,6 +6,7 @@ import Header from "../_components/layout/Header";
 import Sidebar from "../_components/layout/Sidebar";
 import DrawerHeader from "../_components/layout/DrawerHeader";
 import { styled } from "@mui/material";
+import Loading from "./loading";
 
 type Props = { children: React.ReactNode };
 
@@ -30,6 +31,7 @@ export default function DefaultLayout({
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
+          {/* <React.Suspense fallback={<Loading />}>{children}</React.Suspense> */}
           {children}
         </Box>
       </Box>
