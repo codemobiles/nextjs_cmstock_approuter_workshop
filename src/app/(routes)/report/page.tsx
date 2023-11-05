@@ -50,6 +50,8 @@ const ReportPage = () => {
   const [chartData1, setChartData1] = useState([]);
   const [chartData2, setChartData2] = useState([]);
 
+  // throw Error();
+
   const data: any = {
     labels: labels,
     datasets: [
