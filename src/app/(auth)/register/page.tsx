@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardMedia,
   InputAdornment,
   TextField,
   Typography,
@@ -146,6 +147,11 @@ export default function Register({}: Props) {
   return (
     <Box className="flex justify-center items-center">
       <Card className="max-w-[345px] mt-[100px]">
+        <CardMedia
+          sx={{ height: 200 }}
+          image="/static/img/next_register.jpg"
+          title="Contemplative Reptile"
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             Register ({reducer.count})
