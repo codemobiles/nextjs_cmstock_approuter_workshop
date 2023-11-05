@@ -1,8 +1,10 @@
 import { ProductData } from "@/src/models/product.model";
 import { getProducts } from "@/src/services/serverService";
 import { ACCESS_TOKEN_KEY } from "@/src/utils/constant";
+import { Box } from "@mui/material";
 import { cookies } from "next/headers";
 import React from "react";
+import ProductCard from "./ProductCard";
 
 type Props = {};
 
@@ -24,10 +26,10 @@ export default async function Shop({}: Props) {
   const products = (await result.json()) as ProductData[];
 
   return (
-    <div>
+    <Box className="grid gap-2 grid-cols-fluid w-full">
       {products.map((p) => (
-        <div key={p.id}>{p.name}</div>
+        <ProductCard key={p.id} product={p} />
       ))}
-    </div>
+    </Box>
   );
 }

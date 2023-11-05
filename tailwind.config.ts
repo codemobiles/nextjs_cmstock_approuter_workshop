@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        fluid: "repeat(auto-fit, minmax(16rem, 20fr))",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
