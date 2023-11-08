@@ -19,7 +19,7 @@ export default async function Shop({}: Props) {
   const token = cookieStore.get(ACCESS_TOKEN_KEY);
 
   const result = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL_API}\/stock/product`,
+    `${process.env.NEXT_PUBLIC_BASE_URL_API}/stock/product`,
     {
       method: "GET",
       headers: {
